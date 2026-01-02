@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// Get all blog posts and filter for learning paths
+const allPosts = await getCollection('blog');
+const pathPosts = allPosts.filter(post =>
+  post.data.category === 'learning-paths' ||
+  post.data.category === 'paths' ||
+  post.data.title.toLowerCase().includes('path') ||
+  post.data.title.toLowerCase().includes('roadmap')
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Layout title="Learning Paths" description="Curated course sequences to reach your career goals. Follow our expert-designed paths and learn in the right order.">
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-[#1E3A5F] to-[#2d4a6f] text-white py-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="bg-[#10B981]/20 text-[#10B981] text-sm font-semibold px-4 py-1 rounded-full">
+          <i class="fa-solid fa-route mr-2"></i>learning paths
+        </span>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 font-['Nunito'] text-white">Learning Paths</h1>
+      <p class="text-xl text-blue-100 max-w-2xl">
+        Don't know where to start? Follow our curated paths designed by industry experts to reach your career goals.
+      </p>
+    </div>
+  </section>
+
+  <!-- Learning Paths Grid -->
+  <section class="py-16">
+    <div class="max-w-6xl mx-auto px-4">
+      {pathPosts.length > 0 ? (
+        <div class="grid md:grid-cols-2 gap-8">
+          {pathPosts.map((post) => (
+            <a href={`/blog/${post.slug}`} class="bg-white rounded-2xl p-8 hover:shadow-xl transition-all border border-gray-200 group">
+              <div class="flex items-start gap-6">
+                <div class="w-16 h-16 bg-gradient-to-br from-[#10B981] to-[#059669] rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <i class="fa-solid fa-route text-white text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 text-sm text-[#6B7280] mb-2">
+                    <span class="bg-[#10B981]/10 text-[#10B981] px-3 py-1 rounded-full font-semibold capitalize">
+                      {post.data.category}
+                    </span>
+                    <span><i class="fa-regular fa-clock mr-1"></i>{post.data.readTime}</span>
+                  </div>
+                  <h3 class="font-bold text-[#1E3A5F] text-2xl mb-2 font-['Nunito'] group-hover:text-[#10B981] transition-colors line-clamp-2">
+                    {post.data.title}
+                  </h3>
+                  <p class="text-[#6B7280] mb-4 line-clamp-2">
+                    {post.data.description}
+                  </p>
+                  <div class="flex items-center justify-between">
+                    <span class="text-gray-400 text-sm">
+                      {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </span>
+                    <span class="text-[#10B981] font-semibold flex items-center gap-2">
+                      Start Learning <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-16">
+          <div class="w-24 h-24 bg-[#10B981]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fa-solid fa-route text-4xl text-[#10B981]"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-[#1E3A5F] mb-2 font-['Nunito']">Coming Soon!</h3>
+          <p class="text-[#6B7280] max-w-md mx-auto">
+            We're building learning paths for Web Development, Data Science, Cloud, and more. Check back soon!
+          </p>
+          <a href="/blog" class="inline-flex items-center gap-2 mt-6 text-[#10B981] font-semibold hover:underline">
+            <i class="fa-solid fa-arrow-left"></i> Browse All Articles
+          </a>
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

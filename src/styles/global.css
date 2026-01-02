@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1E3A5F;
+  --color-accent: #10B981;
+  --color-muted: #6B7280;
+  --color-surface: #F3F4F6;
+  --font-display: 'Nunito', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+
+  a {
+    color: var(--color-accent);
+    transition: color 0.2s ease;
+  }
+
+  a:hover {
+    color: var(--color-primary);
+  }
+}
